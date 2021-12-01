@@ -1,0 +1,33 @@
+<template>
+    <view>
+        <web-view :webview-styles="webviewStyles" :src="url"></web-view>
+    </view>
+</template>
+
+<script>
+    export default {
+        data() {
+            return {
+                webviewStyles: {
+                    progress: {
+                        color: '#FF3333'
+                    }
+                },
+				url:''
+            }
+        },
+		onLoad(option) {
+			if(option.url){
+				this.url = option.url
+			}else{
+				uni.showToast({
+					title:'参数有误'
+				})
+			}			
+		},
+    }
+</script>
+
+<style>
+
+</style>
