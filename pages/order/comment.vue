@@ -1,25 +1,44 @@
 <template>
 	<view class="content">
 		<scroll-view scroll-y class="scroll">
-			<view v-if="orderGoodsData.length > 0" v-for="(item,index) in orderGoodsData">
-				<view class="goods">
-					<u-row gutter="16">
-						<u-col span="4">
-							<u-image width="200" height="200" :src="item.home_recommended_images"></u-image>
-						</u-col>
-						<u-col span="8">
-							<view class="title">{{item.title}}</view>
-						</u-col>
-					</u-row>
+			<u-form :model="formData" ref="uForm">
+				<view v-if="orderGoodsData.length > 0" v-for="(item,index) in orderGoodsData">
+					<view class="goods">
+						<u-row gutter="16">
+							<u-col span="4">
+								<u-image width="200" height="200" :src="item.home_recommended_images"></u-image>
+							</u-col>
+							<u-col span="8">
+								<view class="title">{{item.title}}</view>
+							</u-col>
+						</u-row>
+					</view>
+					<view class="score">
+						<test>宝贝评分</test>
+						<u-rate :count="5" v-model="formData[index]['rating']" size="40" class="rate"></u-rate>
+					</view>
+					<view class="content">
+						<u-input v-model="formData[index]['content']" type="textarea" border="true" height="200" auto-height="true" />
+					</view>
+					<view class="photo">
+						<u-form-item label="晒图" :label-width="labelWidth">
+							<!-- <u-upload ref="uUpload" @on-change="onChange" :max-size="5 * 1024 * 1024"   max-count="1"  :action="action" :file-list="fileList" :header="uploadHeader"></u-upload> -->
+							<pds-upload ref="upload" 
+							:isOss="isOss" 
+							:ossBucket="ossBucket" 
+							:ossAuthData="ossAuthData" 
+							:ossFile="ossFile"
+							:action="action" 
+							:auto-upload="true" 
+							:max-size="5 * 1024 * 1024" 
+							max-count="3" 
+							:file-list="fileList" 
+							:header="uploadHeader"></pds-upload>
+							<view class="tips-color">晒晒您买到的宝贝<br/>文件大小限5M</view>
+						</u-form-item>
+					</view>
 				</view>
-				<view class="score">
-					<test>宝贝评分</test>
-					<u-rate :count="5" v-model="formData[index]['rating']" size="40" class="rate"></u-rate>
-				</view>
-				<view class="content">
-					<u-input v-model="formData[index]['content']" type="textarea" border="true" height="200" auto-height="true" />
-				</view>
-			</view>
+			</u-form>
 		</scroll-view>
 		<view class="tools" style="width: 100%; line-height: 2;">
 			<view class="anonymous">
@@ -37,7 +56,11 @@
 </template>
 
 <script>
+	import pdsUpload from '@/components/pds-upload/pds-upload.vue';
 	export default {
+		components:{
+			pdsUpload
+		},
 		data() {
 			return {
 				content:'',
@@ -46,11 +69,32 @@
 					name:'anonymous'
 				},
 				orderGoodsData:{},
+				// form:{},
 				formData:{},
 				orderId:0,
+				isOss:false,
+				ossBucket:'',
+				ossAuthData:{},
+				ossFile: 'static/upload/images/comment/',
+				action: '', //oss-cn-shenzhen.aliyuncs.com
+				fileList:[],
+				uploadHeader: {},
+				siteConfig:{},
+				// rules: { // 表单验证规则
+				// 	name: {
+				// 		required: true,
+				// 		message: '请输入名称',
+				// 		trigger: ['change', 'blur']
+				// 	}
+				// },
 			}
 		},
 		methods: {
+			getOss(){
+				this.$u.api.getStsOuah().then(res => {
+					return this.ossAuthData = res.data;
+				})
+			},
 			initFormData() {
 				const formData = this.orderGoodsData.map(item => {
 				  return {
@@ -73,30 +117,63 @@
 				});
 			},
 			addOrderComment(){
-				let data = {
-					orderId:this.orderId,
-					goods:this.formData,
-					isAnonymous:this.anonymous.checked
-				}
-				this.$u.api.addOrderComments(data).then(res => {
-					uni.showToast({
-						title:'评价成功'
-					});
-					setTimeout(uni.navigateBack({}),1000);
-				});
+				console.log('this.$refs.upload',this.$refs.upload);
+				//上传晒图
+				this.formData.forEach((item,index,arr)=>{
+					let commentImages = [];
+					commentImages = this.$refs.upload[index].lists.filter(val => {
+						return val.progress == 100;
+					})
+					if (commentImages) {
+						let tempImages = [];
+						for (var i = 0; i < commentImages.length; i++) {
+							tempImages.push(commentImages[i]['imgSrc'])
+						}
+						item.image = tempImages;
+					}
+				})
+console.log('this.formData',this.formData);
+				// let data = {
+				// 	orderId:this.orderId,
+				// 	goods:this.formData,
+				// 	isAnonymous:this.anonymous.checked
+				// }
+				// this.$u.api.addOrderComments(data).then(res => {
+				// 	uni.showToast({
+				// 		title:'评价成功'
+				// 	});
+				// 	setTimeout(uni.navigateBack({}),1000);
+				// });
 			}
 		},
+		// onReady() {
+		// 	// this.lists = this.$refs.uUpload.lists;
+		// 	this.$refs.uForm.setRules(this.rules);
+		// },
 		onLoad(option) {
+			this.siteConfig = uni.getStorageSync('siteConfig');
 			if(option.orderId){
 				this.orderId = option.orderId;
 				this.getOrderCommentsInfo(option.orderId);
+			}
+			if(Object.keys(this.siteConfig).length > 0 && this.siteConfig.hasOwnProperty('upload_type'))
+			{
+				if(this.siteConfig.upload_type == 'local'){
+					this.action = '';
+				}else if(this.siteConfig.upload_type == 'aliyunOss'){
+					this.getOss();
+					this.action = this.siteConfig.upload_type_aliyunoss_endpoint || '';
+					this.ossBucket = this.siteConfig.upload_type_aliyunoss_bucket || '';
+					this.isOss = true;
+				}
+				
 			}
 		}
 	}
 </script>
 
 <style lang="scss" scoped>
-	.content {
+	.content,.photo {
 		// display: flex;
 		flex-direction: column;
 		align-items: center;
