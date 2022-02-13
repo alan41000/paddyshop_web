@@ -5,7 +5,7 @@
 			您还没有相关的订单
 			<view class="tips">可以去看看有那些想买的</view>
 		</view>
-		<view class="btn">随便逛逛</view>
+		<view @click="navigateTo('/pages/index/index')" class="btn">随便逛逛</view>
 	</view>
 </template>
 

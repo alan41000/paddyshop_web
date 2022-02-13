@@ -87,6 +87,19 @@
 						</view>
 					</scroll-view>
 				</swiper-item>
+				<swiper-item class="swiper-item">
+					<scroll-view scroll-y style="height: 100%;width: 100%;" @scrolltolower="reachBottom">
+						<view class="page-box">
+							<view v-if="orderList[4].length > 0" v-for="(res,index) in orderList[4]" :key="res.id">
+								<pds-order-item :orderItem="res"></pds-order-item>
+							</view>
+							<u-loadmore v-if="orderList[4].length > 0" :status="loadStatus[4]" bgColor="#f2f2f2"></u-loadmore>
+							<view v-if="orderList[4].length == 0">
+								<pds-order-empty></pds-order-empty>
+							</view>
+						</view>
+					</scroll-view>
+				</swiper-item>
 			</swiper>
 		</view>
 	</view>
@@ -104,7 +117,7 @@
 		},
 		data() {
 			return {
-				orderList: [[], [], [], []],
+				orderList: [[], [], [], [],[]],
 				dataList: [],
 				list: [
 					{
@@ -117,8 +130,10 @@
 						name: '待收货'
 					},
 					{
-						name: '已完成',
-						// count: 12
+						name: '待评价',
+					},
+					{
+						name: '全部',
 					}
 				],
 				current: 0,
@@ -126,8 +141,8 @@
 				tabsHeight: 0,
 				dx: 0,
 				size:10,
-				page:[1,1,1,1],
-				loadStatus: ['loadmore','loadmore','loadmore','loadmore'],
+				page:[1,1,1,1,1],
+				loadStatus: ['loadmore','loadmore','loadmore','loadmore','loadmore'],
 				orderCancelDialogShow:false,
 				paymentChooseShow:false,
 				orderReceiptShow:false,
@@ -138,8 +153,9 @@
 			if(option.type)
 			{
 				this.current = option.type;
+				this.swiperCurrent = option.type;
+				this.dx = option.type;
 			}
-			this.getOrderList(this.current);
 		},
 		onShow() {
 			this.getOrderList(this.current);
@@ -163,7 +179,6 @@
 				this.orderReceiptShow = true;
 			},
 			receiptOrder(){
-				console.log('receiptOrder:',this.handle_order_id)
 				let data = {
 					order_id:this.handle_order_id,
 				}
@@ -211,10 +226,18 @@
 			},
 			// 页面数据
 			getOrderList(idx) {
-				let data = {
-					current:this.page[idx],
-					status:Number(idx) + 1
+				let data = {};
+				if(idx == 4){
+					data = {
+						current:this.page[idx],
+					}
+				}else{
+					data = {
+						current:this.page[idx],
+						status:Number(idx) + 1
+					}
 				}
+				
 				this.$u.api.getUserOrder(data).then(res => {
 					for(let i = 0; i < res.data.records.length; i++)
 					{

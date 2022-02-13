@@ -95,6 +95,10 @@
 						return false;
 					}
 					this.wechatPay(res.data,order_id);
+				}).catch(res => {
+					// 还原支付按钮
+					this.$refs.submit.submitText = '确认支付';
+					this.$refs.submit.submitDisable = false;
 				});
 			},
 			orderConfirm(){

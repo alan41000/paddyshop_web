@@ -22,7 +22,6 @@
 					</view>
 					<view class="photo">
 						<u-form-item label="晒图" :label-width="labelWidth">
-							<!-- <u-upload ref="uUpload" @on-change="onChange" :max-size="5 * 1024 * 1024"   max-count="1"  :action="action" :file-list="fileList" :header="uploadHeader"></u-upload> -->
 							<pds-upload ref="upload" 
 							:isOss="isOss" 
 							:ossBucket="ossBucket" 
@@ -69,24 +68,16 @@
 					name:'anonymous'
 				},
 				orderGoodsData:{},
-				// form:{},
 				formData:{},
 				orderId:0,
 				isOss:false,
 				ossBucket:'',
 				ossAuthData:{},
 				ossFile: 'static/upload/images/comment/',
-				action: '', //oss-cn-shenzhen.aliyuncs.com
+				action: '',
 				fileList:[],
 				uploadHeader: {},
 				siteConfig:{},
-				// rules: { // 表单验证规则
-				// 	name: {
-				// 		required: true,
-				// 		message: '请输入名称',
-				// 		trigger: ['change', 'blur']
-				// 	}
-				// },
 			}
 		},
 		methods: {
@@ -101,7 +92,7 @@
 					id: item.id,
 					rating: 0,
 					content: '',
-					image: [],
+					images: [],
 				  }
 				})
 				this.formData = formData
@@ -117,7 +108,6 @@
 				});
 			},
 			addOrderComment(){
-				console.log('this.$refs.upload',this.$refs.upload);
 				//上传晒图
 				this.formData.forEach((item,index,arr)=>{
 					let commentImages = [];
@@ -127,29 +117,32 @@
 					if (commentImages) {
 						let tempImages = [];
 						for (var i = 0; i < commentImages.length; i++) {
-							tempImages.push(commentImages[i]['imgSrc'])
+							if(this.isOss){
+								tempImages.push(commentImages[i]['imgSrc']);
+							}else{
+								tempImages.push(commentImages[i]['response']['data']['value']);
+							}
 						}
-						item.image = tempImages;
+						item.images = tempImages;
 					}
 				})
-console.log('this.formData',this.formData);
-				// let data = {
-				// 	orderId:this.orderId,
-				// 	goods:this.formData,
-				// 	isAnonymous:this.anonymous.checked
-				// }
-				// this.$u.api.addOrderComments(data).then(res => {
-				// 	uni.showToast({
-				// 		title:'评价成功'
-				// 	});
-				// 	setTimeout(uni.navigateBack({}),1000);
-				// });
+				let data = {
+					orderId:this.orderId,
+					goods:this.formData,
+					isAnonymous:this.anonymous.checked
+				}
+
+				this.$u.api.addOrderComments(data).then(res => {
+					uni.showToast({
+						title:'评价成功'
+					});
+
+					setTimeout(() => {
+						uni.navigateBack({});
+					},1500)
+				});
 			}
 		},
-		// onReady() {
-		// 	// this.lists = this.$refs.uUpload.lists;
-		// 	this.$refs.uForm.setRules(this.rules);
-		// },
 		onLoad(option) {
 			this.siteConfig = uni.getStorageSync('siteConfig');
 			if(option.orderId){
@@ -159,14 +152,13 @@ console.log('this.formData',this.formData);
 			if(Object.keys(this.siteConfig).length > 0 && this.siteConfig.hasOwnProperty('upload_type'))
 			{
 				if(this.siteConfig.upload_type == 'local'){
-					this.action = '';
+					this.action = this.siteConfig.website_url + 'common/Upload/save';
 				}else if(this.siteConfig.upload_type == 'aliyunOss'){
 					this.getOss();
 					this.action = this.siteConfig.upload_type_aliyunoss_endpoint || '';
 					this.ossBucket = this.siteConfig.upload_type_aliyunoss_bucket || '';
 					this.isOss = true;
-				}
-				
+				}				
 			}
 		}
 	}
