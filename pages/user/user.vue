@@ -1,7 +1,7 @@
 <template>
 	<view class="contents">
 		<pds-user-info :userInfo="userInfo"></pds-user-info>
-		<pds-order></pds-order>
+		<pds-order :orderCounts="orderCounts"></pds-order>
 		<pds-service></pds-service>
 	</view>
 </template>
@@ -18,12 +18,18 @@
 		},
 		data() {
 			return {
-				userInfo:{}
+				userInfo:{},
+				orderCounts:[0,0,0,0]
 			}
 		},
 		methods: {
 			getUserInfo(){
 				this.userInfo = uni.getStorageSync('userInfo');
+			},
+			getOrderCounts(){
+				this.$u.api.getOrderCounts().then(res => {
+					this.orderCounts = res.data;
+				});
 			}
 		},
 		onLoad() {
@@ -32,6 +38,7 @@
 		onShow() {
 			this.checkLogin();
 			this.getUserInfo();
+			this.getOrderCounts();
 		}
 	}
 </script>

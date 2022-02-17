@@ -1,11 +1,10 @@
 <template>
 	<pds-box title="支付方式">
 		<view slot="content" class="content">
-			<u-radio-group v-model="payment" @change="radioGroupChange">
+			<u-radio-group v-model="payment">
 				<u-cell-group>
-					<u-cell-item v-for="(item,index) in paymentList" :arrow="false" :icon-style="{color:item.iconColor}" icon-size="70" :icon="item.icon" :title="item.name" :title-style="{fontSize:'36rpx'}">
-						<u-radio 
-							@change="radioChange"
+					<u-cell-item v-for="(item,index) in paymentList" :arrow="false" :icon-style="{color:item.iconColor}" icon-size="70" :icon="item.icon" :title="item.name" :title-style="{fontSize:'36rpx'}" @click="paymentChoose(item.id)">
+						<u-radio
 							slot="right-icon" 
 							:name="item.id"
 							:disabled="false">
@@ -41,11 +40,8 @@
 			this.getPaymentList();
 		},
 		methods:{
-			radioChange(ee) {
-				this.$emit('paymentChoose',ee);
-			},
-			radioGroupChange(e){
-				// console.log('e',e)
+			paymentChoose(id) {
+				this.$emit('paymentChoose',id);
 			},
 			getPaymentList(){
 				this.$u.api.getPaymentList().then(res => {

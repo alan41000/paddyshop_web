@@ -61,7 +61,7 @@
 					{ name: '待付款' }, 
 					{ name: '待发货' }, 
 					{ name: '已发货' }, 
-					{ name: '待评价' }, 
+					{ name: '已完成' }, 
 				],
 				submitText:'支付',
 				submitDisable:false,

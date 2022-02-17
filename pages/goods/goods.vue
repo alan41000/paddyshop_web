@@ -179,7 +179,6 @@
 				this.popupShow = false
 			},
 			handleConfirm(obj) {
-				console.log(obj)
 				if(this.buyType == 'buyNow')
 				{
 					this.buyNow(obj);
