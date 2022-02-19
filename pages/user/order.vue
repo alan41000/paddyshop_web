@@ -162,8 +162,8 @@
 		},
 		methods: {
 			paramsInit(){
-				this.page = [1,1,1,1];
-				this.orderList =  [[], [], [], []];
+				this.page = [1,1,1,1,1];
+				this.orderList =  [[], [], [], [],[]];
 				this.dataList = [];
 			},
 			cancelOrderDialog(order_id){
@@ -256,7 +256,7 @@
 			
 			// tab栏切换
 			change(index) {
-				this.page = [1,1,1,1];
+				this.page = [1,1,1,1,1];
 				this.orderList[index] = [];
 				this.loadStatus[index] = 'loading';
 				this.swiperCurrent = index;

@@ -48,7 +48,7 @@
 		<view class="copyright">
 			<pds-copyright></pds-copyright>
 		</view>
-		<pds-submit-bar @buy="selectSku()" :goods_id="Number(id)" :stock="1" :skuValue="skuValueData"></pds-submit-bar>
+		<pds-submit-bar @buy="selectSku" :goods_id="Number(id)" :stock="1" :skuValue="skuValueData"></pds-submit-bar>
 	</view>
 </template>
 

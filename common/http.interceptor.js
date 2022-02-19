@@ -36,7 +36,7 @@ const install = (Vue, vm) => {
 		
 		// 方式四，如果token放在了Storage本地存储中，拦截是每次请求都执行的
 		// 所以哪怕您重新登录修改了Storage，下一次的请求将会是最新值
-		const token = uni.getStorageSync('userInfo').token;
+		const token = uni.getStorageSync('userInfo').token || '';
 		config.header.PaddyShopToken = token;
 		config.header.PaddyShopUserClient = process.env.UNI_PLATFORM;
 		

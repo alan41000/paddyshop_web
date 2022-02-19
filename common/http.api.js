@@ -6,6 +6,7 @@ let getGoodsDataUrl = '/api/goods.Goods/detail';
 let getGoodsIndexListUrl = '/api/goods.goods/indexList';
 let getCategoryListUrl = '/api/goods.Category/categoryList';
 let wechatMiniAppAuthUrl = '/api/auth.Auth/wechatMiniAppAuth';
+let wechatH5AuthUrl = '/api/auth.Auth/wechatH5Auth';
 let getUserOrderUrl = '/api/order.Order/list';
 let addUserAddressUrl = '/api/user.UserAddress/add';
 let delUserAddressUrl = '/api/user.UserAddress/del';
@@ -45,6 +46,7 @@ let getPaymentListUrl = '/api/store.Payment/list';
 let getStsOuahUrl = '/common/OssSTS/getStsOauth';
 let getOrderCountsUrl = '/api/order.Order/orderCounts';
 
+
 // 此处第二个参数vm，就是我们在页面使用的this，你可以通过vm获取vuex等操作，更多内容详见uView对拦截器的介绍部分：
 // https://uviewui.com/js/http.html#%E4%BD%95%E8%B0%93%E8%AF%B7%E6%B1%82%E6%8B%A6%E6%88%AA%EF%BC%9F
 const install = (Vue, vm) => {
@@ -62,6 +64,7 @@ const install = (Vue, vm) => {
 	let getGoodsIndexList = (params = {}) => vm.$u.post(getGoodsIndexListUrl, params);
 	let getCategoryList = (params = {}) => vm.$u.post(getCategoryListUrl, params);
 	let wechatMiniAppAuth = (params = {}) => vm.$u.post(wechatMiniAppAuthUrl, params);
+	let wechatH5Auth = (params = {}) => vm.$u.post(wechatH5AuthUrl, params);	
 	let getUserOrder = (params = {}) => vm.$u.post(getUserOrderUrl, params);
 	let addUserAddress = (params = {}) => vm.$u.post(addUserAddressUrl, params);
 	let delUserAddress = (params = {}) => vm.$u.post(delUserAddressUrl, params);
@@ -111,6 +114,7 @@ const install = (Vue, vm) => {
 		getGoodsIndexList,
 		getCategoryList,
 		wechatMiniAppAuth,
+		wechatH5Auth,
 		getUserOrder,
 		addUserAddress,
 		delUserAddress,

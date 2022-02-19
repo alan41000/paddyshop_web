@@ -14,7 +14,8 @@
 		},
 		data() {
 			return {
-				notes:''
+				notes:'',
+				border: false
 			};
 		}
 	}
