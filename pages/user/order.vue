@@ -91,7 +91,7 @@
 					<scroll-view scroll-y style="height: 100%;width: 100%;" @scrolltolower="reachBottom">
 						<view class="page-box">
 							<view v-if="orderList[4].length > 0" v-for="(res,index) in orderList[4]" :key="res.id">
-								<pds-order-item :orderItem="res"></pds-order-item>
+								<pds-order-item @pay="paymentChoose(res.id)" @cancel="cancelOrderDialog(res.id)" :orderItem="res"></pds-order-item>
 							</view>
 							<u-loadmore v-if="orderList[4].length > 0" :status="loadStatus[4]" bgColor="#f2f2f2"></u-loadmore>
 							<view v-if="orderList[4].length == 0">
@@ -118,7 +118,6 @@
 		data() {
 			return {
 				orderList: [[], [], [], [],[]],
-				dataList: [],
 				list: [
 					{
 						name: '待付款'
@@ -158,13 +157,13 @@
 			}
 		},
 		onShow() {
+			this.paramsInit();
 			this.getOrderList(this.current);
 		},
 		methods: {
 			paramsInit(){
 				this.page = [1,1,1,1,1];
 				this.orderList =  [[], [], [], [],[]];
-				this.dataList = [];
 			},
 			cancelOrderDialog(order_id){
 				this.handle_order_id = order_id;

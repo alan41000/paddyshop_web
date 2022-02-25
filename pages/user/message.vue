@@ -93,8 +93,8 @@
 		data() {
 			return {
 				messageList:[],
-				page:1,
-				size:15,
+				page:0,
+				size:20,
 				loadStatus:'loadmore',
 				detailShow:false,
 				detailInfo:[],
@@ -103,17 +103,20 @@
 		methods: {
 			getUserMessageList() {
 				let data = {
-					current:this.page,
+					current:this.page + 1,
 					size:this.size,
 				};
-				this.$u.api.getUserMessageList(data).then(res => {
-					res.data.records.forEach(ret => {
-						this.messageList.push(ret)
-					})
-					if(res.data.total <= this.page * this.size){
-						this.loadStatus = 'noremore';
-					}
-				});
+				if(this.loadStatus == 'loadmore'){
+					this.$u.api.getUserMessageList(data).then(res => {
+						res.data.records.forEach(ret => {
+							this.messageList.push(ret)
+						})
+						if(res.data.total <= this.page * this.size){
+							this.loadStatus = 'noremore';
+						}
+						this.page = ++this.page;
+					});
+				}
 			},
 			showDetail(item){
 				this.detailShow = true;

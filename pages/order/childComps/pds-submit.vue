@@ -18,7 +18,10 @@
 export default {
 	name:'pds-submit',
 	props:{
-		total_price:0
+		total_price:{
+			type:String,
+			default:'0.00'
+		}
 	},
 	data() {
 		return {

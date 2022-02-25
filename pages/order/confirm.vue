@@ -15,7 +15,7 @@
 		<view class="mt20">
 			<pds-payment @paymentChoose="paymentChoose"></pds-payment>
 		</view>
-		<pds-submit ref="submit" :total_price="orderInfo.price_data.total_price" @pay="addOrder"></pds-submit>
+		<pds-submit ref="submit" :total_price="orderInfo.price_data.total_price.toString()" @pay="addOrder"></pds-submit>
 	</view>
 </template>
 
@@ -102,13 +102,21 @@
 			pay(order_id){
 				let data = {
 					order_id:order_id,
+					// #ifdef H5
+					isH5:true,
+					// #endif
 				}
 				this.$u.api.payOrder(data).then(res => {
 					if(res.data.hasOwnProperty('status') && res.data.status == 2){
 						this.navigateTo('/pages/order/pay-success?orderId='+res.data.id);
 						return false;
 					}
-					this.wechatPay(res.data,order_id);
+					// #ifdef MP-WEIXIN
+						this.wechatPay(res.data,order_id);
+					// #endif
+					// #ifdef H5
+						this.wechatPay(res.data,order_id,wx);
+					// #endif
 				}).catch(res => {
 					// 还原支付按钮
 					this.$refs.submit.submitText = '确认支付';
@@ -172,7 +180,7 @@
 		},
 		onReady(){
 			// #ifdef H5
-				this.wx_config();
+				// this.wx_config();
 			// #endif
 		}
 	}

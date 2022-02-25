@@ -34,15 +34,10 @@
 				siteConfig:{},
 			};
 		},
-		onInit() {
-			// #ifdef H5
-				this.getH5Auth();
-			// #endif
-		},
 		onLoad(){
 			this.siteConfig = uni.getStorageSync('siteConfig');
 			// // #ifdef H5
-			// 	this.getH5Auth();
+				this.getH5Auth();
 			// // #endif
 		},
 		methods:{

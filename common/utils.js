@@ -47,21 +47,44 @@ export const inArray = (val, arr) => {
 /**
  * 微信支付
  */
-export const wechatPay = (paymentData, orderId) => {
-  uni.requestPayment({
-  	nonceStr: paymentData.nonceStr,
-  	package: 'prepay_id=' + paymentData.prepay_id,
-  	paySign: paymentData.paySign,
-  	signType: paymentData.signType,
-  	timeStamp: paymentData.timeStamp,
-  	success: function (res) {
-  		navigateTo('/pages/order/pay-success?orderId='+ orderId);
-  	},
-  	fail: function (err) {
-  		console.log('fail:' + JSON.stringify(err));
-  	},
-  	complete:function(res){
-  		// console.log(res)
-  	}
-  });
+export const wechatPay = (paymentData, orderId, wx = null) => {
+	// #ifdef MP-WEIXIN
+	uni.requestPayment({
+		nonceStr: paymentData.nonceStr,
+		package: 'prepay_id=' + paymentData.prepay_id,
+		paySign: paymentData.paySign,
+		signType: paymentData.signType,
+		timeStamp: paymentData.timeStamp,
+		success: function (res) {
+			navigateTo('/pages/order/pay-success?orderId='+ orderId);
+		},
+		fail: function (err) {
+			console.log('fail:' + JSON.stringify(err));
+		},
+		complete:function(res){
+			// console.log(res)
+		}
+	});
+	// #endif
+	// #ifdef H5
+	wx.invoke(
+	    'getBrandWCPayRequest', {
+			appId: uni.getStorageSync('siteConfig').weixinh5_appid,
+			timeStamp:paymentData.timeStamp,
+			nonceStr: paymentData.nonceStr,
+			package: 'prepay_id=' + paymentData.prepay_id,
+			signType: 'MD5',
+			paySign: paymentData.paySign
+		},
+	    function (res) {
+	        if (res.err_msg == 'get_brand_wcpay_request:ok') {
+	            // 使用以上方式判断前端返回,微信团队郑重提示：
+	            //res.err_msg将在用户支付成功后返回ok，但并不保证它绝对可靠。
+				navigateTo('/pages/order/pay-success?orderId='+ orderId);
+	        } else if (res.err_msg == 'get_brand_wcpay_request:cancel') {
+	            console.log('支付失败',res)
+	        }
+	    }
+	)
+	// #endif
 }

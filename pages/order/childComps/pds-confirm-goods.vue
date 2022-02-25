@@ -31,7 +31,12 @@
 			
 		},
 		props:{
-			goods_list:[]
+			goods_list:{
+				type:Array,
+				default() {
+					return [];
+				}
+			},
 		},
 		data() {
 			return {

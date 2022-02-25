@@ -138,7 +138,16 @@
 					});
 
 					setTimeout(() => {
-						uni.navigateBack({});
+						uni.navigateBack({
+						  success: () => {
+							let page = getCurrentPages().pop();
+							if (!page) {
+							  return;
+							} else {
+								page.onLoad({type:4});
+							}
+						  }
+						})
 					},1500)
 				});
 			}
