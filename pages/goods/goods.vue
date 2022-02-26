@@ -1,6 +1,7 @@
 <template>
 	<view>
 		<u-toast ref="uToast" />
+		<pds-barrage :list="barrageList" :top="barrageTop" :left="35" color="#ffffff" background="#000000" :opacity="0.7"></pds-barrage>
 		<echone-sku
 			:show="popupShow" 
 			 mode="forbidden"
@@ -55,10 +56,12 @@
 <script>
 	import echoneSku from '@/components/echone-sku/echone-sku'
 	import pdsSubmitBar from "./childComps/pds-submit-bar.vue";
+	import pdsBarrage from './childComps/pds-barrage.vue'
 	export default {
 		components:{
 			pdsSubmitBar,
-			echoneSku
+			echoneSku,
+			pdsBarrage
 		},
 		data() {
 			return {
@@ -87,9 +90,16 @@
 				specifications: [],
 				selectedIndex: 0,
 				buyType:'buyNow',
+				barrageTop:20,
+				barrageList: []
 			}
 		},
 		methods: {
+			getOrderRecordBarrage(){
+				this.$u.api.getOrderRecordBarrage({id:this.id}).then(res => {
+					this.barrageList = res.data;
+				});
+			},
 			bannerView(index){
 				let arr = []
 				for(var i = 0; i < this.goodsData.goodsImages.length; i++){
@@ -160,6 +170,7 @@
 				{
 					this.id = option.id;
 					await this.getGoodsData();
+					this.getOrderRecordBarrage();
 					// this.getSkuValueData();
 					this.checkHasFavorites();
 				}
@@ -191,7 +202,7 @@
 			}
 		},
 		onLoad(option) {
-			this.bannerHeight = this.pdsSystemInfo.screenWidth * 2
+			this.bannerHeight = this.pdsSystemInfo.screenWidth * 2;
 			this.init(option);
 		}
 	}

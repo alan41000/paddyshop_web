@@ -54,3 +54,7 @@ Vue.prototype.checkLogin = checkLogin
 Vue.prototype.navigateTo = navigateTo
 Vue.prototype.inArray = inArray
 Vue.prototype.wechatPay = wechatPay
+
+// let tempData = '{"code":200,"msg":"操作成功","data":{"id":2,"openid_alipay":"","openid_weixin":"","unionid_weixin":"","openid_weixin_web":"oNIOM52YHRXIcN_1jz7HH3ze-1B8","openid_baidu":"","openid_toutiao":"","openid_qq":"","unionid_qq":"","status":0,"salt":"","password":"","token":"bb682a9478a0c3366692d78bb77d1ee3","token_expire":1648102882,"username":"","nickname":"Alan Leung","mobile":"","email":"","gender":0,"avatar":"https:\/\/thirdwx.qlogo.cn\/mmopen\/vi_32\/Q0j4TwGTfTLnpoLE8cDZtA0YD0QKpJwvrYnV1iaemLKhNI8mX5z53iaWS9syuQACVjpPvDZkoXzUCPPRdM3FFjXQ\/132","province":"","city":"","birthday":null,"address":"","integral":0,"locking_integral":0,"referrer":0,"is_delete_time":0,"last_login":1645510882,"last_ip":"192.168.0.103","create_time":"2022-02-19 11:52:18","update_time":"2022-02-22 14:21:22"}}';
+// tempData = JSON.parse(tempData).data;
+// uni.setStorageSync("userInfo",tempData);
