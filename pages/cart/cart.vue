@@ -1,27 +1,20 @@
 <template>
 	<view class="content">
-		<pds-dialog
-		@cancel="delDialogShow = false" 
-		@confirm="delCart" 
-		:show="delDialogShow" 
-		title="真的要残忍删除我吗？"
-		>
-		</pds-dialog>
+		<pds-dialog @cancel="delDialogShow = false" @confirm="delCart" :show="delDialogShow" title="真的要残忍删除我吗？"></pds-dialog>
 		<view class="tools" v-if="cartList.length > 0">
 			<u-button @click="editCart" size="mini" shape="circle">{{isEditCart == true ? '取消编辑' : '编辑'}}</u-button>
 		</view>
 		<view class="scroll-view">
-			<scroll-view scroll-y class="scroll">
-				<view v-if="cartList.length > 0">
-					<pds-cart-goods @selectGoods="selectGoods(item.id,index)" v-for="(item,index) in cartList" :cartGoodsData="item"></pds-cart-goods>
-				</view>
-				<view class="empty" v-else>
-					<u-empty text="购物车空空如也" mode="car"></u-empty>
-					<u-button @click="navigateTo('/pages/index/index')" :custom-style="{marginTop:'20rpx'}" size="medium" type="primary" shape="circle">去逛逛</u-button>
-				</view>
-			</scroll-view>
+			<view v-if="cartList.length > 0">
+				<pds-cart-goods @selectGoods="selectGoods(item.id,index)" v-for="(item,index) in cartList" :cartGoodsData="item"></pds-cart-goods>
+			</view>
+			<view class="empty" v-else>
+				<u-empty text="购物车空空如也" mode="car"></u-empty>
+				<u-button @click="navigateTo('/pages/index/index')" :custom-style="{margin:'20rpx 0rpx 30rpx 0rpx'}" size="medium" type="primary" shape="circle">去逛逛</u-button>
+			</view>
 		</view>
-		<view style="width: 100%; height: 100rpx; line-height: 2;" v-if="cartList.length > 0">
+		<pds-goods-recommend v-if="recommendGoodsList.length > 0" name="精选推荐" :goodsList="recommendGoodsList"></pds-goods-recommend>
+		<view class="tool-box" v-if="cartList.length > 0">
 			<pds-cart-edit v-if="isEditCart" :isSelectAll="isSelectAll" @moveFavorites="moveFavorites" @del="delCartShow" @selectAll="selectAll"></pds-cart-edit>
 			<pds-cart-tools v-else :isSelectAll="isSelectAll" @settlement="settlement" @selectAll="selectAll" :totalPrice="totalPrice"></pds-cart-tools>
 		</view>
@@ -31,7 +24,7 @@
 <script>
 	import pdsCartGoods from "./childComps/pds-cart-goods.vue";
 	import pdsCartTools from "./childComps/pds-cart-tools.vue";
-	import pdsCartEdit from "./childComps/pds-cart-edit.vue";
+	import pdsCartEdit from "./childComps/pds-cart-edit.vue";	
 	export default {
 		components:{
 			pdsCartGoods,
@@ -47,6 +40,7 @@
 				isSelectAll:false,
 				isEditCart:false,
 				delDialogShow:false,
+				recommendGoodsList:[],
 			}
 		},
 		watch:{
@@ -168,6 +162,7 @@
 		onShow() {
 			this.init();
 			this.getCartList();
+			this.getGoodsRecommend(this).then(val=>{ this.recommendGoodsList = val });
 		}
 	}
 </script>
@@ -185,15 +180,11 @@
 		// padding: 20rpx;
 	}
 	.scroll-view{
-		height: calc(100vh - var(--window-top) - 200rpx);
-		width: 100%;
-	}
-	.scroll{
-		height: calc(100vh - var(--window-top) - 200rpx);
+		height: auto;
 		width: 100%;
 	}
 	.empty{
-		padding-top: 200rpx;
+		padding-top: 20rpx;
 		text-align: center;
 	}
 	.tools{
@@ -201,5 +192,14 @@
 		margin-top: 20rpx;
 		padding: 0rpx 20rpx;
 
+	}
+	.tool-box{
+		width: 100%;
+		height: 120rpx;
+		line-height: 2;
+		position: fixed;
+		bottom: 0rpx;
+		background-color: #FFFFFF;
+		z-index: 10000;
 	}
 </style>

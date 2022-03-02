@@ -3,6 +3,9 @@
 		<pds-user-info :userInfo="userInfo"></pds-user-info>
 		<pds-order :orderCounts="orderCounts"></pds-order>
 		<pds-service></pds-service>
+		<view class="mt20">
+			<pds-goods-recommend v-if="recommendGoodsList.length > 0" name="精选推荐" :goodsList="recommendGoodsList"></pds-goods-recommend>
+		</view>
 	</view>
 </template>
 
@@ -19,7 +22,8 @@
 		data() {
 			return {
 				userInfo:{},
-				orderCounts:[0,0,0,0]
+				orderCounts:[0,0,0,0],
+				recommendGoodsList:[],
 			}
 		},
 		methods: {
@@ -39,13 +43,22 @@
 			this.checkLogin();
 			this.getUserInfo();
 			this.getOrderCounts();
+			this.getGoodsRecommend(this).then(val=>{ this.recommendGoodsList = val });
 		}
 	}
 </script>
 
+<style lang="scss" scoped>
+	/deep/ .goods-recommend{
+		padding: 0rpx;
+	}
+</style>
 <style lang="scss">
 	page{
 		background-color: $u-bg-color;
+	}
+	.mt20{
+		margin-top: 20rpx;
 	}
 	.contents {
 		// display: flex;

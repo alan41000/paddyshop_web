@@ -17,6 +17,11 @@
 		></echone-sku>
 		<view class="banner">
 			<u-swiper @click="bannerView" :list="goodsData.goodsImages" name="url" :height="bannerHeight"></u-swiper>
+			<u-icon @click="closeVideo" v-if="videoPlay" class="video-close" name="close-circle" color="#c0c4cc" size="100"></u-icon>
+			<u-icon @click="playVideo" v-if="goodsData.video" class="video-play" name="play-circle" color="#c0c4cc" size="130"></u-icon>
+			<view class="video-main" v-if="videoPlay">
+				<video :autoplay="true" :loop="true" :style="{height:bannerHeight+'rpx',width:'100%'}" id="myVideo" :src="goodsData.video" controls></video>
+			</view>
 		</view>
 		<view class="title center">
 			{{goodsData.title}}
@@ -46,6 +51,7 @@
 			<view class="title">产品介绍</view>
 			<u-parse :html="goodsData.content"></u-parse>
 		</view>
+		<pds-goods-recommend v-if="recommendGoodsList.length > 0" name="精选推荐" :goodsList="recommendGoodsList"></pds-goods-recommend>
 		<view class="copyright">
 			<pds-copyright></pds-copyright>
 		</view>
@@ -91,10 +97,19 @@
 				selectedIndex: 0,
 				buyType:'buyNow',
 				barrageTop:20,
-				barrageList: []
+				barrageList: [],
+				recommendGoodsList:[],
+				// playVideoBtn:true,
+				videoPlay:false,
 			}
 		},
 		methods: {
+			closeVideo(){
+				this.videoPlay = false;
+			},
+			playVideo(){
+				this.videoPlay = true;
+			},
 			getOrderRecordBarrage(){
 				this.$u.api.getOrderRecordBarrage({id:this.id}).then(res => {
 					this.barrageList = res.data;
@@ -173,6 +188,7 @@
 					this.getOrderRecordBarrage();
 					// this.getSkuValueData();
 					this.checkHasFavorites();
+					this.getGoodsRecommend(this).then(val=>{ this.recommendGoodsList = val });
 				}
 				else
 				{
@@ -245,4 +261,26 @@
 	.copyright{
 		height: 250rpx;
 	}
+	.banner{
+		position: relative;
+		.video-play{
+			bottom: 20rpx;
+			left: 20rpx;
+			position: absolute;
+			z-index: 7000;
+		}
+		.video-close{
+			top: 20rpx;
+			right: 20rpx;
+			position: absolute;
+			z-index: 10000;
+		}
+		.video-main{
+			width: 100%;
+			position: absolute;
+			z-index: 8000;
+			top: 0rpx;
+		}
+		
+	}	
 </style>

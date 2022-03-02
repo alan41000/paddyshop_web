@@ -1,5 +1,5 @@
 <template>
-	<view class="content">
+	<view class="contents">
 		<u-popup v-model="paymentChooseShow" mode="bottom" :closeable="true" close-icon-size="50" border-radius="30" height="450">
 			<pds-payment @paymentChoose="pay()"></pds-payment>
 		</u-popup>
@@ -41,6 +41,9 @@
 				</u-col>
 			</u-row>
 		</view>
+		<view class="mt20">
+			<pds-goods-recommend v-if="recommendGoodsList.length > 0" name="精选推荐" :goodsList="recommendGoodsList"></pds-goods-recommend>
+		</view>
 	</view>
 </template>
 
@@ -66,11 +69,13 @@
 				submitText:'支付',
 				submitDisable:false,
 				paymentChooseShow:false,
+				recommendGoodsList:[],
 			};
 		},
 		onLoad(option) {
 			if(option.id){
 				this.getOrderDetail(option.id);
+				this.getGoodsRecommend(this).then(val=>{ this.recommendGoodsList = val });
 			}
 			else{
 				uni.showToast({
@@ -127,6 +132,11 @@
 	}
 </script>
 
+<style lang="scss" scoped>
+	/deep/ .goods-recommend{
+		padding: 0rpx;
+	}
+</style>
 <style lang="scss">
 	page{
 		background-color: $u-bg-color;
@@ -134,12 +144,12 @@
 	.mt20{
 		margin-top: 20rpx;
 	}
-	.content {
+	.contents {
 		// display: flex;
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
-		padding: 20rpx 20rpx 180rpx 20rpx;
+		padding: 20rpx 20rpx 100rpx 20rpx;
 	}
 	.pay {
 		z-index: 100000;

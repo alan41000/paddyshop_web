@@ -31,7 +31,7 @@
 <style lang="scss" scoped>
 	.service{
 		width: 100%;
-		height: 300rpx;
+		height: auto;
 		.more{
 			font-size: 28rpx;
 			color: $u-tips-color;

@@ -17,7 +17,7 @@
 				</view>
 				<view class="price" @click="goGoods">
 					<pds-price-display class="mr" :price="priceNormal"></pds-price-display>
-					<pds-price-original :price="priceOriginal"></pds-price-original>
+					<pds-price-original v-if="priceOriginal" :price="priceOriginal"></pds-price-original>
 				</view>
 				<view class="tools">
 					<u-button @click="del()" type="error" size="mini" shape="circle" plain>删除</u-button>

@@ -1,14 +1,14 @@
 <script>
 	export default {
 		onLaunch: function() {
-			console.log('App Launch')
+			console.log('欢迎使用PaddyShop开源电商系统！')
 			this.getSiteConfig();
 		},
 		onShow: function() {
-			console.log('App Show')
+			
 		},
 		onHide: function() {
-			console.log('App Hide')
+			
 		},
 		methods:{
 			getSiteConfig(){

@@ -88,3 +88,14 @@ export const wechatPay = (paymentData, orderId, wx = null) => {
 	)
 	// #endif
 }
+
+/**
+ * 获取推荐商品数据
+ */
+export const getGoodsRecommend = (that) => {
+	return new Promise((resolve,reject) => {
+		that.$u.api.getGoodsRecommend().then(res => {
+			resolve(res.data)
+		});
+	})	
+}

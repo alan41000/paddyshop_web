@@ -44,6 +44,7 @@
 
 <style lang="scss" scoped>
 	.goods-item{
+		overflow: hidden;
 		padding: 20rpx;
 		width: 100%;
 		height: 500rpx;
