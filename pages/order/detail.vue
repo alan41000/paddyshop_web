@@ -20,6 +20,9 @@
 			<pds-box title="订单信息">
 				<view slot="content">
 					<u-cell-group>
+						<u-cell-item title="商品总价" :arrow="false" :value="'¥'+ orderInfo.price"></u-cell-item>
+						<u-cell-item title="优惠金额" :arrow="false" :value-style="{color:'#fa3534'}" :value="'¥-'+ orderInfo.preferential_price"></u-cell-item>
+						<u-cell-item title="实付款" :arrow="false" :value-style="{color:'#fa3534'}" :value="'¥'+ orderInfo.total_price"></u-cell-item>
 						<u-cell-item title="订单号" :arrow="false" :value="orderInfo.order_no">
 							<u-button :custom-style="{marginLeft:'20rpx'}" @click="copy" size="mini" slot="right-icon" shape="circle">复制</u-button>
 						</u-cell-item>

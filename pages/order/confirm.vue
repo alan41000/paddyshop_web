@@ -1,5 +1,6 @@
 <template>
 	<view class="content">
+		<pds-coupon-popup @close="couponShow = false" @useCoupon="useCoupon" :show="couponShow" :list="orderInfo.coupon_list"></pds-coupon-popup>
 		<u-popup v-model="addressChooseShow" mode="bottom" :closeable="true" close-icon-size="50" border-radius="30" height="1000">
 			<pds-address-list :addressList="addressList" @chooseAddress="chooseAddress"></pds-address-list>
 		</u-popup>
@@ -10,12 +11,15 @@
 			<pds-confirm-goods :goods_list="orderInfo.goods_list"></pds-confirm-goods>
 		</view>
 		<view class="mt20">
-			<pds-notes ref="notes"></pds-notes>
+			<pds-confirm-coupon @couponPopupShow="couponShow = true" :qty="orderInfo.coupon_list.length" :preferential_price="orderInfo.price_data.preferential_price"></pds-confirm-coupon>
 		</view>
 		<view class="mt20">
 			<pds-payment @paymentChoose="paymentChoose"></pds-payment>
 		</view>
-		<pds-submit ref="submit" :total_price="orderInfo.price_data.total_price.toString()" @pay="addOrder"></pds-submit>
+		<view class="mt20">
+			<pds-notes ref="notes"></pds-notes>
+		</view>
+		<pds-submit ref="submit" :total_price="orderInfo.price_data.actual_price" @pay="addOrder"></pds-submit>
 	</view>
 </template>
 
@@ -26,6 +30,8 @@
 	import pdsAddressList from "@/components/pds-address-list/pds-address-list.vue"
 	import pdsAddress from "./childComps/pds-address.vue"
 	import pdsConfirmGoods from "./childComps/pds-confirm-goods.vue"
+	import pdsConfirmCoupon from "./childComps/pds-confirm-coupon.vue"
+	import pdsCouponPopup from "./childComps/pds-coupon-popup.vue"
 	import pdsNotes from "./childComps/pds-notes.vue"
 	import pdsPayment from "./childComps/pds-payment.vue"
 	import pdsSubmit from "./childComps/pds-submit.vue"
@@ -34,6 +40,8 @@
 			pdsAddressList,
 			pdsAddress,
 			pdsConfirmGoods,
+			pdsConfirmCoupon,
+			pdsCouponPopup,
 			pdsNotes,
 			pdsPayment,
 			pdsSubmit
@@ -60,9 +68,16 @@
 				skuValue:'',
 				buyType:'',
 				payment_id:0,
+				couponShow:false,
+				useCouponInfo:{},
 			}
 		},
 		methods: {
+			useCoupon(e){
+				this.couponShow = false;
+				this.useCouponInfo = e;
+				this.orderConfirm();
+			},
 			paymentChoose(e){
 				this.payment_id = e;
 			},
@@ -90,6 +105,7 @@
 					goods:JSON.stringify(this.goods),
 					user_note:this.$refs.notes.notes,
 					address:JSON.stringify(this.addressInfo),
+					coupon:this.useCouponInfo,
 				}			
 				this.$u.api.addOrder(data).then(res => {
 					this.pay(res.data.id)
@@ -127,6 +143,7 @@
 				let data = {
 					buy_type:this.buyType,
 					goods:JSON.stringify(this.goods),
+					coupon:this.useCouponInfo,
 				}
 				this.$u.api.getOrderConfirm(data).then(res => {
 					this.orderInfo = res.data;

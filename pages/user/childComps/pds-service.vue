@@ -7,6 +7,7 @@
 					<u-cell-item @click="navigateTo('/pages/user/address-list')" :icon-style="{color:'#80b7f9'}" icon="map-fill" title="我的地址"></u-cell-item>
 					<u-cell-item @click="navigateTo('/pages/wallet/wallet')" :icon-style="{color:'#80b7f9'}" icon="rmb-circle-fill" title="我的钱包"></u-cell-item>
 					<u-cell-item @click="navigateTo('/pages/user/message')" :icon-style="{color:'#80b7f9'}" icon="rmb-circle-fill" title="我的消息"></u-cell-item>
+					<u-cell-item @click="navigateTo('/pages/user/coupon')" :icon-style="{color:'#80b7f9'}" icon="rmb-circle-fill" title="我的优惠券"></u-cell-item>
 				</u-cell-group>
 			</view>
 		</pds-box>

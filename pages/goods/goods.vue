@@ -1,6 +1,7 @@
 <template>
 	<view>
 		<u-toast ref="uToast" />
+		<pds-coupon @close="couponShow = false" :show="couponShow" :list="goodsCouponList"></pds-coupon>
 		<pds-barrage :list="barrageList" :top="barrageTop" :left="35" color="#ffffff" background="#000000" :opacity="0.7"></pds-barrage>
 		<echone-sku
 			:show="popupShow" 
@@ -30,6 +31,7 @@
 			<pds-price-normal :price="goodsData.price"></pds-price-normal>
 			<pds-price-original v-if="goodsData.original_price > 0" tag="原价" :price="goodsData.original_price"></pds-price-original>
 			<view class="tools">
+				<view class="coupon" @click="couponShow = true">领券</view>
 				<u-icon @click="delFavorites()" v-if="hasFavorites" color="#ff7900" name="star-fill" size="50"></u-icon>
 				<u-icon @click="addFavorites()" v-else color="#ff7900" name="star" size="50"></u-icon>
 			</view>
@@ -60,14 +62,16 @@
 </template>
 
 <script>
-	import echoneSku from '@/components/echone-sku/echone-sku'
+	import echoneSku from '@/components/echone-sku/echone-sku';
 	import pdsSubmitBar from "./childComps/pds-submit-bar.vue";
-	import pdsBarrage from './childComps/pds-barrage.vue'
+	import pdsBarrage from './childComps/pds-barrage.vue';
+	import pdsCoupon from './childComps/pds-coupon.vue';
 	export default {
 		components:{
 			pdsSubmitBar,
 			echoneSku,
-			pdsBarrage
+			pdsBarrage,
+			pdsCoupon
 		},
 		data() {
 			return {
@@ -101,6 +105,8 @@
 				recommendGoodsList:[],
 				// playVideoBtn:true,
 				videoPlay:false,
+				couponShow:false,
+				goodsCouponList:[],
 			}
 		},
 		methods: {
@@ -109,6 +115,11 @@
 			},
 			playVideo(){
 				this.videoPlay = true;
+			},
+			getGoodsCouponList(){
+				this.$u.api.getGoodsCouponList({goods_id:this.id}).then(res => {
+					this.goodsCouponList = res.data;
+				});
 			},
 			getOrderRecordBarrage(){
 				this.$u.api.getOrderRecordBarrage({id:this.id}).then(res => {
@@ -132,7 +143,7 @@
 						if(res.data.hasFavorites)
 						{
 							this.hasFavorites = true;
-							this.favoritesId = res.data.favoritesId;
+							this.favoritesId = res.data.favorites_id;
 						}
 					});
 				}
@@ -144,7 +155,7 @@
 				});
 			},
 			delFavorites(){
-				this.$u.api.delFavorites({favoritesId:this.favoritesId}).then(res => {
+				this.$u.api.delFavorites({favorites_id:this.favoritesId}).then(res => {
 					this.hasFavorites = false;
 					this.favoritesId = 0;
 				});
@@ -186,6 +197,7 @@
 					this.id = option.id;
 					await this.getGoodsData();
 					this.getOrderRecordBarrage();
+					this.getGoodsCouponList();
 					// this.getSkuValueData();
 					this.checkHasFavorites();
 					this.getGoodsRecommend(this).then(val=>{ this.recommendGoodsList = val });
@@ -245,8 +257,14 @@
 		background-color: #FFFFFF;
 	}
 	.tools{
+		.coupon{
+			float: left;
+			width: 100rpx;
+			font-size: 32rpx;
+			color: $u-type-error;
+		}
 		float: right;
-		width: 50rpx;
+		width: 200rpx;
 	}
 	.content{
 		.title{

@@ -19,7 +19,7 @@
 
 <script>
 	export default {
-		name: "pdsBarrage",
+		name: "pds-barrage",
 		props: {
 			list: {
 				type: Array,
