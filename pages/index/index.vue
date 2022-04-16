@@ -1,6 +1,8 @@
 <template>
 	<view class="content">
-		<pds-search-bar @search="search"></pds-search-bar>
+		<view @click="search">
+			<pds-search-bar></pds-search-bar>
+		</view>
 		<pds-banner :bannerData="bannerData"></pds-banner>
 		<pds-nav :navData="navData"></pds-nav>
 		<pds-goods-floor :floorData="goodsIndexList"></pds-goods-floor>
@@ -54,7 +56,7 @@
 			},
 			search(e)
 			{
-				this.navigateTo('/pages/search/search?keyword=' + e)
+				this.navigateTo('/pages/search/search')
 			}
 		}
 	}

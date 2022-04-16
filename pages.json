@@ -227,6 +227,15 @@
             }
             
         }
+        ,{
+            "path" : "pages/goods/history",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
     ],
 	"globalStyle": {
 		// #ifdef H5
