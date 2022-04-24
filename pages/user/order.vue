@@ -15,7 +15,7 @@
 		>
 		</pds-dialog>
 		<u-popup v-model="paymentChooseShow" mode="bottom" :closeable="true" close-icon-size="50" border-radius="30" height="380">
-			<pds-payment @paymentChoose="pay()"></pds-payment>
+			<pds-payment ref="paymentRef" @paymentChoose="pay()"></pds-payment>
 		</u-popup>
 		<view class="wrap">
 			<view class="u-tabs-box">
@@ -170,7 +170,8 @@
 				this.orderCancelDialogShow = true;
 			},
 			paymentChoose(order_id){
-				this.handle_order_id = order_id
+				this.$refs.paymentRef.payment = 'payment';
+				this.handle_order_id = order_id;
 				this.paymentChooseShow = true;
 			},
 			receiptConfirm(order_id){
