@@ -2,7 +2,7 @@
 	<view>
 		<u-toast ref="uToast" />
 		<pds-coupon @close="couponShow = false" :show="couponShow" :list="goodsCouponList"></pds-coupon>
-		<pds-barrage :list="barrageList" :top="barrageTop" :left="35" color="#ffffff" background="#000000" :opacity="0.7"></pds-barrage>
+		<pds-barrage v-if="barrageList.length > 0" :list="barrageList" :top="barrageTop" :left="35" color="#ffffff" background="#000000" :opacity="0.7"></pds-barrage>
 		<echone-sku
 			:show="popupShow" 
 			 mode="forbidden"
@@ -31,7 +31,8 @@
 			<pds-price-normal :price="goodsData.price"></pds-price-normal>
 			<pds-price-original v-if="goodsData.original_price > 0" tag="原价" :price="goodsData.original_price"></pds-price-original>
 			<view class="tools">
-				<view class="coupon" @click="couponShow = true">领券</view>
+				<view v-if="goodsCouponList.length > 0" class="coupon" @click="couponShow = true">领券</view>
+				<view v-else class="coupon-empty"></view>
 				<u-icon @click="delFavorites()" v-if="hasFavorites" color="#ff7900" name="star-fill" size="50"></u-icon>
 				<u-icon @click="addFavorites()" v-else color="#ff7900" name="star" size="50"></u-icon>
 			</view>
@@ -262,6 +263,11 @@
 			width: 100rpx;
 			font-size: 32rpx;
 			color: $u-type-error;
+		}
+		.coupon-empty{
+			float: left;
+			width: 100rpx;
+			height: 10rpx;
 		}
 		float: right;
 		width: 200rpx;

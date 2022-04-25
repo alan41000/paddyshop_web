@@ -69,10 +69,10 @@ export const wechatPay = (paymentData, orderId, wx = null) => {
 	// #ifdef H5
 	wx.invoke(
 	    'getBrandWCPayRequest', {
-			appId: uni.getStorageSync('siteConfig').weixinh5_appid,
-			timeStamp:paymentData.timeStamp,
+			appId: paymentData.appId,
+			timeStamp:paymentData.timestamp,
 			nonceStr: paymentData.nonceStr,
-			package: 'prepay_id=' + paymentData.prepay_id,
+			package: paymentData.package,
 			signType: 'MD5',
 			paySign: paymentData.paySign
 		},

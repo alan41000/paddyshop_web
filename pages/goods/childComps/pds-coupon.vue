@@ -1,6 +1,6 @@
 <template>
-	<view class="container">
-		<u-popup v-model="popShow" mode="bottom" :closeable="true" @close="close()" close-icon-size="50" border-radius="30" height="1000">			
+	<u-popup v-model="popShow" mode="bottom" :closeable="true" @close="close()" close-icon-size="50" border-radius="30" height="1000">
+		<view class="content">
 			<scroll-view :scroll-y="true" style="height: 850rpx; margin-top: 80rpx;">
 				<view v-if="list.length > 0">
 					<view  v-for="(res, index) in list" class="item">
@@ -17,11 +17,11 @@
 					</view>
 				</view>
 				<view v-else>
-					no data
-				</view>
+					暂无数据
+				</view> 
 			</scroll-view>
-		</u-popup>
-	</view>
+		</view>
+	</u-popup>
 </template>
 
 <script>
@@ -60,8 +60,8 @@
 </script>
 
 <style lang="scss" scoped>
-	.container{
-		padding: 50rpx 40rpx;
+	.content{
+		padding: 20rpx;
 	}
 	.item{
 		width: 95%;
