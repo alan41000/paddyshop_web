@@ -54,7 +54,7 @@
 					this.goodsIndexList = res.data;
 				});
 			},
-			search(e)
+			search()
 			{
 				this.navigateTo('/pages/search/search')
 			}

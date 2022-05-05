@@ -1,7 +1,7 @@
 <template>
 	<view class="u-wrap">
-		<view class="u-search-box">
-			<pds-search-bar @search="search"></pds-search-bar>
+		<view class="u-search-box" @click="search">
+			<pds-search-bar></pds-search-bar>
 		</view>
 		<view class="u-menu-wrap">
 			<scroll-view scroll-y scroll-with-animation class="u-tab-view menu-scroll-view" :scroll-top="scrollTop"
@@ -163,9 +163,9 @@
 					}
 				}, 10)
 			},
-			search(e)
+			search()
 			{
-				this.navigateTo('/pages/search/search?keyword=' + e)
+				this.navigateTo('/pages/search/search')
 			}
 		}
 	}

@@ -103,16 +103,19 @@
 								};
 								that.$u.api.wechatMiniAppAuth(data).then(res => {
 									uni.setStorageSync('userInfo',res.data);
-									uni.navigateBack({
-									  success: () => {
-										let page = getCurrentPages().pop();
-										if (!page) {
-										  return;
-										} else {
-											page.onLoad(page.options);
-										}
-									  }
-									})
+									// 暂时跳转首页
+									that.navigateTo('/pages/index/index');
+									
+									// uni.navigateBack({
+									//   success: () => {
+									// 	let page = getCurrentPages().pop();
+									// 	if (!page) {
+									// 	  return;
+									// 	} else {
+									// 		page.onLoad(page.options);
+									// 	}
+									//   }
+									// })
 								});
 							},
 							fail(fail_res){
