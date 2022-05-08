@@ -2,19 +2,36 @@
 
 <div align="center">
 
-	```shell
-	如果对您有帮助，您可以点右上角 “Star” 收藏一下 ，获取第一时间更新，谢谢！
-	```
+```shell
+如果对您有帮助，您可以点右上角 “Star” 收藏一下 ，获取第一时间更新，谢谢！
+```
 
 </div>
 
 ------------------------------------------------------------------------
 
+#### 用户端安装教程
+1.安装好Hbuilder
+
+2.修改manifest.json中的应用名称、应用描述、微信小程序appid等
+
+3.修改/common/http.interceptor.js 的envBaseUrl为你的网址，如：https://demo.paddyshop.net
+
 ### 项目介绍
 #### PaddyShop全网多平台免费开源电商系统！
-* 本项目采用前后端分离方案，后端框架使用thinkphp6，前台uniapp、uview，后台d2-admin
-* 本项目还在测试阶段，基本功能已经完成，欢迎学习交流，暂不建议商用
-* 由于工作原因，项目正在完善中（仅供参考），随时更新日志，有疑问请留言
+* 一个基于thinkphp6+uniapp的轻量级、前后端分离的电商系统。
+* 我们致力于为中小企业打造一个完整、易于维护和易于二次开发的开源商城，源码100%开源，支持二次开发定制，没有过度的代码封装，小白新手程序员都能看得懂，让企业用更低的成本、更少的人力，更快的速度构建自己的商城，开启网上商城销售业务。
+
+### 官网
+https://www.paddyshop.net
+
+### 关注PaddyShop公众号
+<img src='https://paddyshop.oss-cn-shanghai.aliyuncs.com/doc/ercode_offical_account.jpg' width='200' />
+
+### 体验码
+<img src='https://paddyshop.oss-cn-shanghai.aliyuncs.com/doc/ercode_h5.png' width='200' />
+<img src='https://paddyshop.oss-cn-shanghai.aliyuncs.com/doc/ercode_miniapp_wechat.jpg' width='200' />
+
 
 ### 源代码地址
 * 服务器端php：
@@ -32,29 +49,32 @@
 ```
 后台配置
 系统
-> 权限管理
-> 管理员列表
-> 角色管理
-> 权限分配
-> 物流管理
-> 地区管理
-> 配送方式
+    > 权限管理
+        > 管理员列表
+        > 角色管理
+        > 权限分配
+    > 物流管理
+        > 地区管理
+        > 配送方式
+    > 系统设置
 会员
-> 会员管理
+    > 会员管理
 商品
-> 商品管理
-> 商品分类
-> 商品评价
+    > 商品管理
+    > 商品分类
+    > 商品评价
 订单
-> 订单管理
+    > 订单管理
 财务
-> 钱包日志
-> 支付日志
-> 钱包管理
+    > 钱包日志
+    > 支付日志
+    > 钱包管理
+营销
+    > 优惠券
 店铺
-> 导航管理
-> 文章发布
-> 海报管理
+    > 导航管理
+    > 文章发布
+    > 海报管理
 ```
 
 #### 前端
@@ -66,25 +86,14 @@
 购物车
 订单确认页
 用户中心
-> 我的订单
-> 我的地址
-> 我的收藏
-> 我的钱包
+    > 我的订单
+    > 我的地址
+    > 我的收藏
+    > 我的钱包
+    > 我的优惠券
+    > 我的足迹
+    > 我的消息
 ```
-
-#### 推荐环境
-Nignx
-PHP 7.4
-MySQL 5.7
-CentOS 8以上
-推荐使用bt宝塔面板，
-
-#### 安装教程
-1.将源码解压到服务器空间
-2.运行目录设在/public
-3.进行安装 http://域名/install
-4.后台地址：http://域名/admin
-安装完成后建议删除/app/install和/public/install目录。
 
 #### 页面展示
 ![小程序](https://paddyshop.oss-cn-shanghai.aliyuncs.com/doc/1.png "小程序")
