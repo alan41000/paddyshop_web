@@ -13,7 +13,12 @@
 				<u-button @click="navigateTo('/pages/index/index')" :custom-style="{margin:'20rpx 0rpx 30rpx 0rpx'}" size="medium" type="primary" shape="circle">去逛逛</u-button>
 			</view>
 		</view>
-		<pds-goods-recommend v-if="recommendGoodsList.length > 0" name="精选推荐" :goodsList="recommendGoodsList"></pds-goods-recommend>
+		<view v-if="cartList.length > 0" style="padding-bottom: 120rpx;">
+			<pds-goods-recommend v-if="recommendGoodsList.length > 0" name="精选推荐" :goodsList="recommendGoodsList"></pds-goods-recommend>
+		</view>
+		<view v-else>
+			<pds-goods-recommend v-if="recommendGoodsList.length > 0" name="精选推荐" :goodsList="recommendGoodsList"></pds-goods-recommend>
+		</view>
 		<view class="tool-box" v-if="cartList.length > 0">
 			<pds-cart-edit v-if="isEditCart" :isSelectAll="isSelectAll" @moveFavorites="moveFavorites" @del="delCartShow" @selectAll="selectAll"></pds-cart-edit>
 			<pds-cart-tools v-else :isSelectAll="isSelectAll" @settlement="settlement" @selectAll="selectAll" :totalPrice="totalPrice"></pds-cart-tools>

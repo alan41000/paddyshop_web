@@ -63,8 +63,8 @@
 						{{res.create_time}}
 					</u-col>
 					<u-col span="2">
-						<text v-if="res.status == 0">已支付</text>
-						<text v-if="res.status == 1">未支付</text>
+						<text v-if="res.status == 0">未支付</text>
+						<text v-if="res.status == 1">已支付</text>
 					</u-col>
 				</u-row>
 				<u-loadmore  @loadmore="getRechargeLogList" :status="loadStatus" v-if="rechargeLogList.length !== 0" />
