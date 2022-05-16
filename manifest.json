@@ -2,8 +2,8 @@
     "name" : "PaddyShop",
     "appid" : "",
     "description" : "PaddyShop 全网免费的跨平台电商系统",
-    "versionName" : "0.1",
-    "versionCode" : 20211201,
+    "versionName" : "1.0.1",
+    "versionCode" : 20220517,
     "transformPx" : false,
     /* 5+App特有相关 */
     "app-plus" : {

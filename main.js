@@ -39,8 +39,8 @@ Vue.component('pdsGoodsRecommend',pdsGoodsRecommend)
 //==============================================================================================
 
 app.$mount()
-Vue.prototype.pdsVersion = 'v1.0.0'
-Vue.prototype.pdsVersionCode = '20220505'
+Vue.prototype.pdsVersion = 'v1.0.1'
+Vue.prototype.pdsVersionCode = '20220517'
 Vue.prototype.pdsSystemInfo = uni.getSystemInfoSync()
 Vue.prototype.pdsSymbol = '¥'
 
