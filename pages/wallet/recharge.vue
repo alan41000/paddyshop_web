@@ -10,7 +10,7 @@
 		<view class="mt20">
 			<pds-box title="支付方式">
 				<view slot="content" class="content">
-					<u-radio-group v-model="payment" @change="radioGroupChange">
+					<u-radio-group style="width: 100%;" v-model="payment" @change="radioGroupChange">
 						<u-cell-group>
 							<u-cell-item :arrow="false" :icon-style="{color:'#07c160'}" icon-size="70" icon="weixin-fill" title="微信支付" :title-style="{fontSize:'36rpx'}">
 								<u-radio 

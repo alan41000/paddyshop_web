@@ -32,7 +32,9 @@
 					width:'300rpx',
 					marginTop:'40rpx'
 				},
-				walletInfo:{},
+				walletInfo:{
+					normal_money:0,
+				},
 			}
 		},
 		methods: {
@@ -62,9 +64,16 @@
 	.mt20{
 		margin-top: 20rpx;
 	}
+	// #ifdef MP-WEIXIN
 	.mainBox /deep/ .box{
 		background-color: #2B85E4;
 	}
+	// #endif
+	// #ifdef H5
+	.mainBox{
+		background-color: #2B85E4;
+	}
+	// #endif
 	.main{
 		color: #FFFFFF;
 		text-align: center;
