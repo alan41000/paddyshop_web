@@ -5,6 +5,7 @@
 		</view>
 		<pds-banner :bannerData="bannerData"></pds-banner>
 		<pds-nav :navData="navData"></pds-nav>
+		<pds-article v-if="articleData.length > 0" :articleData="articleData"></pds-article>
 		<pds-goods-floor :floorData="goodsIndexList"></pds-goods-floor>
 		<pds-copyright></pds-copyright>
 	</view>
@@ -15,24 +16,28 @@
 	import pdsBanner from "./childComps/pds-banner.vue";
 	import pdsNav from "./childComps/pds-nav.vue";
 	import pdsGoodsFloor from "./childComps/pds-goods-floor.vue";
+	import pdsArticle from "./childComps/pds-article.vue";
 	export default {
 		components:{
 			pdsBanner,
 			pdsSearchBar,
 			pdsNav,
 			pdsGoodsFloor,
+			pdsArticle,
 		},
 		data() {
 			return {
 				bannerData:[],
 				goodsIndexList:[],
 				navData:[],
+				articleData:[],
 			}
 		},
 		onLoad() {
 			this.getBanner();
 			this.getNavigation();
 			this.getGoodsFloor();
+			this.getArticleList();
 		},
 		methods: {
 			// 获取海报数据
@@ -57,6 +62,11 @@
 			search()
 			{
 				this.navigateTo('/pages/search/search')
+			},
+			getArticleList(){
+				this.$u.api.getArticleList().then(res => {
+					this.articleData = res.data.records;
+				});
 			}
 		}
 	}
