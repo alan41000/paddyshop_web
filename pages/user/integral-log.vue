@@ -1,0 +1,158 @@
+<template>
+	<view class="container">
+		<pds-dialog
+		@cancel="detailShow = false" 
+		@confirm="detailShow = false"
+		:show="detailShow" 
+		>
+			<view slot="content" class="detail">
+				<view class="detail-title">详情</view>
+				<u-row gutter="16">
+					<u-col span="4">
+						操作类型
+					</u-col>
+					<u-col span="8">
+						<text v-if="detailInfo.type == 0">减少</text>
+						<text v-if="detailInfo.type == 1">增加</text>
+					</u-col>
+				</u-row>
+				<u-row gutter="16">
+					<u-col span="4">
+						原始积分
+					</u-col>
+					<u-col span="8">
+						{{detailInfo.original_integral}}
+					</u-col>
+				</u-row>
+				<u-row gutter="16">
+					<u-col span="4">
+						最新积分
+					</u-col>
+					<u-col span="8">
+						{{detailInfo.new_integral}}
+					</u-col>
+				</u-row>
+				<u-row gutter="16">
+					<u-col span="4">
+						操作积分
+					</u-col>
+					<u-col span="8">
+						{{detailInfo.operation_integral}}
+					</u-col>
+				</u-row>
+				<u-row gutter="16">
+					<u-col span="4">
+						操作原因
+					</u-col>
+					<u-col span="8">
+						{{detailInfo.msg}}
+					</u-col>
+				</u-row>
+				<u-row gutter="16">
+					<u-col span="4">
+						时间
+					</u-col>
+					<u-col span="8">
+						{{detailInfo.create_time}}
+					</u-col>
+				</u-row>
+			</view>
+		</pds-dialog>
+		<scroll-view :scroll-y="true" class="scroll-box"  @scrolltolower="getRechargeLogList">
+			<view v-if="userIntegralLogList.length > 0" class="item">
+				<u-row gutter="16" class="title">
+					<u-col span="3">
+						操作类型
+					</u-col>
+					<u-col span="3">
+						操作积分
+					</u-col>
+					<u-col span="6">
+						时间
+					</u-col>
+				</u-row>
+				<u-row @click="showDetail(res)" gutter="16" v-for="(res, index) in userIntegralLogList" :key="res.id" class="row">
+					<u-col span="3">
+						<text v-if="res.type == 0">减少</text>
+						<text v-if="res.type == 1">增加</text>
+					</u-col>
+					<u-col span="3">
+						{{res.operation_integral}}
+					</u-col>
+					<u-col span="6">
+						{{res.create_time}}
+					</u-col>
+				</u-row>
+				<u-loadmore  @loadmore="getRechargeLogList" :status="loadStatus" v-if="userIntegralLogList.length !== 0" />
+			</view>
+			<view v-if="userIntegralLogList.length == 0">
+				<u-empty text="没有数据" mode="data"></u-empty>
+			</view>
+		</scroll-view>
+	</view>
+</template>
+
+<script>
+	export default {
+		data() {
+			return {
+				userIntegralLogList:[],
+				detailInfo:[],
+				page:1,
+				size:15,
+				loadStatus:'loadmore',
+				detailShow:false,
+			}
+		},
+		methods: {
+			getUserIntegralLogList() {
+				let data = {
+					current:this.page,
+					size:this.size,
+				};
+				this.$u.api.getUserIntegralLogList(data).then(res => {
+					res.data.records.forEach(ret => {
+						this.userIntegralLogList.push(ret)
+					})
+					if(res.data.total <= this.page * this.size){
+						this.loadStatus = 'noremore';
+					}
+					this.page += 1;
+				});
+			},
+			showDetail(item){
+				this.detailShow = true;
+				this.detailInfo = item;
+			}
+		},
+		onLoad() {
+			this.getUserIntegralLogList();
+		}
+	}
+</script>
+
+<style lang="scss">
+	.container{
+		padding: 50rpx 40rpx;
+		line-height: 2;
+	}
+	.title{
+		font-size: 32rpx;
+		font-weight: bold;
+		line-height: 2;
+	}
+	.row{
+		line-height: 2;
+	}
+	.detail{
+		padding: 0rpx 20rpx;
+	}
+	.detail-title{
+		text-align: center;
+		font-size: 32rpx;
+	}
+	.scroll-box{
+		height: calc(100vh - var(--window-top) - 100rpx);
+		padding-bottom: 20rpx;
+	}
+</style>

@@ -254,6 +254,15 @@
             }
             
         }
+        ,{
+            "path" : "pages/user/integral-log",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
     ],
 	"globalStyle": {
 		// #ifdef H5

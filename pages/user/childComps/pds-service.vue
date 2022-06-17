@@ -9,6 +9,7 @@
 					<u-cell-item @click="navigateTo('/pages/user/message')" :icon-style="{color:'#80b7f9'}" icon="volume-fill" title="我的消息"></u-cell-item>
 					<u-cell-item @click="navigateTo('/pages/user/coupon')" :icon-style="{color:'#80b7f9'}" icon="coupon-fill" title="我的优惠券"></u-cell-item>
 					<u-cell-item @click="navigateTo('/pages/goods/history')" :icon-style="{color:'#80b7f9'}" icon="moments-circel-fill" title="我的足迹"></u-cell-item>
+					<u-cell-item @click="navigateTo('/pages/user/integral-log')" :icon-style="{color:'#80b7f9'}" icon="integral-fill" title="我的积分"></u-cell-item>
 				</u-cell-group>
 			</view>
 		</pds-box>

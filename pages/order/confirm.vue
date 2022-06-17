@@ -10,14 +10,20 @@
 		<view class="mt20">
 			<pds-confirm-goods :goods_list="orderInfo.goods_list"></pds-confirm-goods>
 		</view>
+		<view class="mt20" v-if="siteConfig.integral_deduction_scale > 0 && orderInfo.integral_deduction.max_can_use_integral > 0">
+			<pds-integral-deduction @useInegral="useInegral()" :maxCanUseIntegral="orderInfo.integral_deduction.max_can_use_integral" :userIntegral="orderInfo.integral_deduction.user_integral"></pds-integral-deduction>
+		</view>
 		<view class="mt20">
-			<pds-confirm-coupon @couponPopupShow="couponShow = true" :qty="orderInfo.coupon_list.length" :preferential_price="orderInfo.price_data.preferential_price"></pds-confirm-coupon>
+			<pds-confirm-coupon @couponPopupShow="couponShow = true" :qty="orderInfo.coupon_list.length" :preferential_price="couponPreferentialPrice"></pds-confirm-coupon>
 		</view>
 		<view class="mt20">
 			<pds-payment @paymentChoose="paymentChoose"></pds-payment>
 		</view>
 		<view class="mt20">
 			<pds-notes ref="notes"></pds-notes>
+		</view>
+		<view class="mt20">
+			<pds-confirm-order-info v-if="orderInfo.extension_data.length > 0" :orderExtensionData="orderInfo.extension_data"></pds-confirm-order-info>
 		</view>
 		<pds-submit ref="submit" :total_price="orderInfo.price_data.actual_price" @pay="addOrder"></pds-submit>
 	</view>
@@ -35,6 +41,8 @@
 	import pdsNotes from "./childComps/pds-notes.vue"
 	import pdsPayment from "./childComps/pds-payment.vue"
 	import pdsSubmit from "./childComps/pds-submit.vue"
+	import pdsIntegralDeduction from './childComps/pds-integral-deduction.vue'
+	import pdsConfirmOrderInfo from './childComps/pds-confirm-orderinfo.vue'
 	export default {
 		components:{
 			pdsAddressList,
@@ -44,10 +52,13 @@
 			pdsCouponPopup,
 			pdsNotes,
 			pdsPayment,
-			pdsSubmit
+			pdsSubmit,
+			pdsIntegralDeduction,
+			pdsConfirmOrderInfo,
 		},
 		data() {
 			return {
+				siteConfig:{},
 				addressChooseShow:false,
 				addressInfo:{
 					name:'',
@@ -72,9 +83,15 @@
 				payment_id:0,
 				couponShow:false,
 				useCouponInfo:{},
+				integralDeduction:false,
+				couponPreferentialPrice:0,
 			}
 		},
 		methods: {
+			useInegral(e){
+				this.integralDeduction = e.value;
+				this.orderConfirm();
+			},
 			useCoupon(e){
 				this.couponShow = false;
 				this.useCouponInfo = e;
@@ -108,6 +125,7 @@
 					user_note:this.$refs.notes.notes,
 					address:JSON.stringify(this.addressInfo),
 					coupon:this.useCouponInfo,
+					integral_deduction:this.integralDeduction,
 				}			
 				this.$u.api.addOrder(data).then(res => {
 					this.pay(res.data.id)
@@ -146,9 +164,15 @@
 					buy_type:this.buyType,
 					goods:JSON.stringify(this.goods),
 					coupon:this.useCouponInfo,
+					integral_deduction:this.integralDeduction,
 				}
 				this.$u.api.getOrderConfirm(data).then(res => {
 					this.orderInfo = res.data;
+					for(var i = 0; i < this.orderInfo.extension_data.length; i++){
+						if(this.orderInfo.extension_data[i]['name'] == '优惠券'){
+							this.couponPreferentialPrice = this.orderInfo.extension_data[i]['price'];
+						}
+					}
 				});
 			},
 			wx_config(){
@@ -183,6 +207,7 @@
 			}
 		},
 		onLoad(option) {
+			this.siteConfig = uni.getStorageSync('siteConfig');
 			this.checkLogin();
 			if(option.buyType)
 			{

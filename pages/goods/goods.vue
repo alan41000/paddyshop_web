@@ -30,6 +30,7 @@
 		<view class="price">
 			<pds-price-normal :price="goodsData.price"></pds-price-normal>
 			<pds-price-original v-if="goodsData.original_price > 0" tag="原价" :price="goodsData.original_price"></pds-price-original>
+			<pds-integral-deduction class="integral-deduction" v-if="siteConfig.integral_deduction_scale > 0 && goodsData.max_buy_integral > 0" :maxBuyIntegral="siteConfig.integral_deduction_scale * goodsData.max_buy_integral / 100"></pds-integral-deduction>
 			<view class="tools">
 				<view v-if="goodsCouponList.length > 0" class="coupon" @click="couponShow = true">领券</view>
 				<view v-else class="coupon-empty"></view>
@@ -67,15 +68,18 @@
 	import pdsSubmitBar from "./childComps/pds-submit-bar.vue";
 	import pdsBarrage from './childComps/pds-barrage.vue';
 	import pdsCoupon from './childComps/pds-coupon.vue';
+	import pdsIntegralDeduction from './childComps/pds-integral-deduction.vue'
 	export default {
 		components:{
 			pdsSubmitBar,
 			echoneSku,
 			pdsBarrage,
-			pdsCoupon
+			pdsCoupon,
+			pdsIntegralDeduction
 		},
 		data() {
 			return {
+				siteConfig:{},
 				id:0,
 				goodsData:{},
 				bannerHeight:0,
@@ -231,6 +235,7 @@
 			}
 		},
 		onLoad(option) {
+			this.siteConfig = uni.getStorageSync('siteConfig');
 			this.bannerHeight = this.pdsSystemInfo.screenWidth * 2;
 			this.init(option);
 		}
@@ -306,5 +311,8 @@
 			top: 0rpx;
 		}
 		
-	}	
+	}
+	.integral-deduction{
+		margin-left: 20rpx;
+	}
 </style>

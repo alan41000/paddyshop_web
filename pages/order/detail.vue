@@ -33,6 +33,7 @@
 						<u-cell-item v-if="orderInfo.delivery_time > 0" title="快递" :arrow="false" :value="orderInfo.express_id"></u-cell-item>
 						<u-cell-item v-if="orderInfo.delivery_time > 0" title="快递单号" :arrow="false" :value="orderInfo.express_number"></u-cell-item>
 						<u-cell-item title="留言" :arrow="false" :value="orderInfo.user_note"></u-cell-item>
+						<u-cell-item v-for="(item,index) in JSON.parse(orderInfo.extension_data)" :title="item.name" :arrow="false" :value="item.tips"></u-cell-item>
 					</u-cell-group>
 				</view>
 			</pds-box>

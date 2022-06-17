@@ -1,8 +1,13 @@
 <template>
 	<view class="contents">
 		<pds-user-info :userInfo="userInfo"></pds-user-info>
-		<pds-order :orderCounts="orderCounts"></pds-order>
-		<pds-service></pds-service>
+		<pds-user-record :wallet="userRecord.wallet" :coupon="userRecord.coupon" :integral="userRecord.integral" :favorites="userRecord.favorites"></pds-user-record>
+		<view class="mt20">
+			<pds-order :orderCounts="orderCounts"></pds-order>
+		</view>
+		<view class="mt20">
+			<pds-service></pds-service>
+		</view>
 		<view class="mt20">
 			<pds-goods-recommend v-if="recommendGoodsList.length > 0" name="精选推荐" :goodsList="recommendGoodsList"></pds-goods-recommend>
 		</view>
@@ -13,17 +18,20 @@
 	import pdsUserInfo from "./childComps/pds-user-info.vue"
 	import pdsOrder from "./childComps/pds-order.vue"
 	import pdsService from "./childComps/pds-service.vue"
+	import pdsUserRecord from "./childComps/pds-user-record.vue"
 	export default {
 		components:{
 			pdsUserInfo,
 			pdsOrder,
-			pdsService
+			pdsService,
+			pdsUserRecord,
 		},
 		data() {
 			return {
 				userInfo:{},
 				orderCounts:[0,0,0,0],
 				recommendGoodsList:[],
+				userRecord:[],
 			}
 		},
 		methods: {
@@ -34,7 +42,12 @@
 				this.$u.api.getOrderCounts().then(res => {
 					this.orderCounts = res.data;
 				});
-			}
+			},
+			getUserRecord(){
+				this.$u.api.getUserRecord().then(res => {
+					this.userRecord = res.data;
+				});
+			},
 		},
 		onLoad() {
 			
@@ -43,6 +56,7 @@
 			this.checkLogin();
 			this.getUserInfo();
 			this.getOrderCounts();
+			this.getUserRecord();
 			this.getGoodsRecommend(this).then(val=>{ this.recommendGoodsList = val });
 		}
 	}
