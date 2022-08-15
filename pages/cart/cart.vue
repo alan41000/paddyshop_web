@@ -21,7 +21,7 @@
 		</view>
 		<view class="tool-box" v-if="cartList.length > 0">
 			<pds-cart-edit v-if="isEditCart" :isSelectAll="isSelectAll" @moveFavorites="moveFavorites" @del="delCartShow" @selectAll="selectAll"></pds-cart-edit>
-			<pds-cart-tools v-else :isSelectAll="isSelectAll" @settlement="settlement" @selectAll="selectAll" :totalPrice="totalPrice"></pds-cart-tools>
+			<pds-cart-tools v-else :isSelectAll="isSelectAll" @settlement="settlement" @selectAll="selectAll" :totalPrice="Number(totalPrice)"></pds-cart-tools>
 		</view>
 	</view>
 </template>

@@ -13,7 +13,7 @@
 			<u-col span="5">
 				<view>
 					<span class="total">合计：</span>
-					<pds-price-normal :price="totalPriceData"></pds-price-normal>
+					<pds-price-normal :price="totalPriceData.toString()"></pds-price-normal>
 				</view>
 			</u-col>
 			<u-col span="4">
