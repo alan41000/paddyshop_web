@@ -75,7 +75,7 @@
 					})
 				})
 			},
-			wechatLogin(callback = ''){
+			async wechatLogin(callback = ''){
 				//#ifdef H5
 					const appid = this.siteConfig.weixinh5_appid;
 					let redirect_uri = this.siteConfig.website_url + 'h5/#pages/user/login'// 前端域名
@@ -86,45 +86,29 @@
 				//#endif
 				
 				//#ifdef MP-WEIXIN
-					var that = this;
-					if(that.privacy.checked)
-					{
-						that.getCode();
-						uni.getUserProfile({
-							desc:'授权获取您的公开信息',
-							success(res) {
-								that.loading = true;
-								that.disabled = true;
-								let data = {
-									authcode : that.code,
-									rawData : res.rawData,
-									iv:res.iv,
-									encryptedData:res.encryptedData,
-								};
-								that.$u.api.wechatMiniAppAuth(data).then(res => {
-									uni.setStorageSync('userInfo',res.data);
-									// 暂时跳转首页
-									that.navigateTo('/pages/index/index');
-									
-									// uni.navigateBack({
-									//   success: () => {
-									// 	let page = getCurrentPages().pop();
-									// 	if (!page) {
-									// 	  return;
-									// 	} else {
-									// 		page.onLoad(page.options);
-									// 	}
-									//   }
-									// })
-								});
-							},
-							fail(fail_res){
-								console.log('fail_res',fail_res)
-							}
-						});
-					}
-					else
-					{
+					if(this.privacy.checked){
+						uni.showLoading({
+							title:'授权中'
+						})
+						$res = await this.wechatMiniAppAuth();
+						if($res){
+							uni.hideLoading()
+							
+							// 暂时跳转首页
+							that.navigateTo('/pages/index/index');
+							
+							// uni.navigateBack({
+							//   success: () => {
+							// 	let page = getCurrentPages().pop();
+							// 	if (!page) {
+							// 	  return;
+							// 	} else {
+							// 		page.onLoad(page.options);
+							// 	}
+							//   }
+							// })
+						}
+					}else{
 						uni.showToast({
 							title:'请阅读并同意相关协议',
 							icon:'none'

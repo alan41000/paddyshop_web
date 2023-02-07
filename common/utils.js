@@ -99,3 +99,23 @@ export const getGoodsRecommend = (that) => {
 		});
 	})	
 }
+
+/**
+ * 微信登录
+ */
+export const wechatMiniAppAuth = (that) => {
+	return new Promise((resolve, reject) => {
+		uni.login({
+			provider: "weixin",
+			success: (res => {
+				let data = {
+					authcode:res.code
+				}
+				that.$u.api.wechatMiniAppAuth(data).then(res => {
+					uni.setStorageSync('userInfo',res.data);
+					resolve(res.data)
+				});
+			})
+		})
+	})
+}

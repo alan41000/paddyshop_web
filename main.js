@@ -50,7 +50,8 @@ import {
   checkLogin,
   inArray,
   wechatPay,
-  getGoodsRecommend
+  getGoodsRecommend,
+  wechatMiniAppAuth
 } from './common/utils'
 
 Vue.prototype.checkLogin = checkLogin
@@ -58,3 +59,4 @@ Vue.prototype.navigateTo = navigateTo
 Vue.prototype.inArray = inArray
 Vue.prototype.wechatPay = wechatPay
 Vue.prototype.getGoodsRecommend = getGoodsRecommend
+Vue.prototype.wechatMiniAppAuth = wechatMiniAppAuth

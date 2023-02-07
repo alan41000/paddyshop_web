@@ -6,7 +6,10 @@
 		<view class="mt20">
 			<pds-box>
 				<view slot="content">
-					<u-steps :list="stepList" :current="Number(orderInfo.status - 1)"></u-steps>
+					<u-steps v-if="orderInfo.status == 6 && orderInfo.delivery_time == null" :list="[{ name: '待付款' },{ name: '待发货' }, { name: '已关闭' } ]" :current="2"></u-steps>
+					<u-steps v-else-if="orderInfo.status == 6 && orderInfo.delivery_time !== null" :list="[{ name: '待付款' },{ name: '待发货' },{ name: '已发货' }, { name: '已关闭' } ]" :current="3"></u-steps>
+					<u-steps v-else-if="orderInfo.status == 5 && orderInfo.delivery_time !== null" :list="[{ name: '待付款' },{ name: '已取消' }]" :current="1"></u-steps>
+					<u-steps v-else :list="[{ name: '待付款' },{ name: '待发货' },{ name: '已发货' }, { name: '已完成' } ]" :current="orderInfo.status-1"></u-steps>
 				</view>
 			</pds-box>
 		</view>

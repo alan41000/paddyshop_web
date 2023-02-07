@@ -263,6 +263,15 @@
             }
             
         }
+        ,{
+            "path" : "pages/order/aftersale",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
     ],
 	"globalStyle": {
 		// #ifdef H5

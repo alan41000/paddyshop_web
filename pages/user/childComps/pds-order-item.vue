@@ -21,8 +21,13 @@
 						￥{{ item.price }}
 					</view>
 					<view class="number">x{{ item.qty }}</view>
+					<view v-if="orderItem.status > 1 && item.refund_status == 0" class="aftersale" @click="navigateTo('/pages/order/aftersale?order_id=' + orderItem.id + '&detail_id=' + item.id + '&goods_id=' + item.goods_id)">申请售后</view>
+					<view v-if="item.refund_status == 1" class="aftersale" @click="navigateTo('/pages/order/aftersale?order_id=' + orderItem.id + '&detail_id=' + item.id + '&goods_id=' + item.goods_id)">售后进度</view>
 				</view>
 			</view>
+			<!-- <view style="width: 100%;">
+				<view class="aftersale" @click="navigateTo('/pages/order/aftersale?order_id=' + orderItem.id + '&detail_id=' +item.id)">申请售后</view>
+			</view>	 -->
 		</view>
 		
 		<view class="total">
@@ -37,7 +42,7 @@
 			<view class="exchange btn" v-if="orderItem.status <= 1" @click="cancel">取消订单</view>
 			<view class="pay btn" v-if="orderItem.status == 1" @click="pay">支付</view>
 			<view class="evaluate btn" v-if="orderItem.status == 4 && orderItem.user_is_comments == 0" @click="navigateTo('/pages/order/comment?orderId='+orderItem.id)">评价</view>
-			<view class="pay btn" v-if="orderItem.status == 3" @click="receipt">确认收货</view>
+			<view class="pay btn" v-if="orderItem.status == 3" @click="receipt">确认收货</view>			
 		</view>
 	</view>
 </template>
@@ -138,6 +143,10 @@
 				}
 				.number {
 					color: $u-tips-color;
+					font-size: 24rpx;
+				}
+				.aftersale{
+					margin-top: 10rpx;
 					font-size: 24rpx;
 				}
 			}
